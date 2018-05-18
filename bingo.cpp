@@ -1,26 +1,27 @@
 #include <iostream>
 #include <stdio.h>
+#include <random>
 using namespace std;
 int main(void){
-    // Your code here!
     int status[5][5] = {};
-    int i,j;
-    
-    printf("RAND_MAX=%d\n",RAND_MAX);
-    
+    int i,j;//iが横、jが縦
+	int k;
+    int duplication[5] = {};
+
     for(i=0; i<5; i++){
         for(j=0; j<5; j++){
-            if(i == 0){
-                //status[i][m] =rand   
-            }else if(i == 1){
-                //status[i][m]
-            }else if(i == 2){
-                //status[i][m]
-            }else if(i == 3){
-                //status[i][m]
-            }else{
-                //status[i][m]
-            }
+			Relottery:
+			
+			status[i][j] = rand() % 15 + i*15 +1;
+			duplication[j] = status[i][j];
+			//かぶったらだめ
+			//被り調査
+			for(k=0; k<j; k++){
+				if(status[i][j] == duplication[k]){
+					goto Relottery;
+				}
+			}
+			printf("%d\n",status[i][j]);
         }
     }
 }
