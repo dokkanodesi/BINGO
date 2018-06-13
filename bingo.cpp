@@ -60,26 +60,48 @@ int main(void){
     }
 	status[2][2] = 0;//中央が開く
 	
-	int cnt = 1;
+	
+	int cnt = 0;
 	int num;
-	while(cnt==1){//bingoしたら終わりにしたい
-		for(i=0; i<5; i++){
+	int OpenJudge = 0;
+	int CallNumber[75];
+	
+	while(cnt < 5){//bingoしたら終わりにしたい
+	Recall:
+	num = Choose();
+	for(i=0; i<cnt + 1; i++){
+		if(num == CallNumber[i]){
+			goto Recall;//上4行くらいに飛ぶ
+		}
+	}
+	CallNumber[cnt] = num;
+		for(i=0; i<5; i++){//開くかどうか判定
 			for(j=0; j<5; j++){
-				num = Choose();
-				if(num == status[i][j]){
-					status[i][j] = 0;
+				if(num == status[j][i]){
+					status[j][i] = 0;
+					OpenJudge++;
 				}
 				if(j == 0 && i != 0)printf("\n");//改行してカードっぽい表示にする
-				if(status[i][j]){//true、つまり番号が開いていない(0)なら
+				if(status[j][i] != 0){//true、つまり番号が開いていない(0じゃない)なら
 					printf("%d	",status[j][i]);
 				}else{
 					printf("OPEN	");
 				}
 			}
 		}
+		
 		//ビンゴ、リーチ判定
 		printf("%dです！",num);
+		if(OpenJudge == 1){
+			printf("該当する数字がオープンされます！");
+			OpenJudge--;
+		}
+		printf("\n\n");
 		cnt++;//単体だとテスト用
 	}
 	return 0;
 }
+
+
+
+
