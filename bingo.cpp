@@ -61,25 +61,62 @@ int main(void){
 	status[2][2] = 0;//中央が開く
 	
 	
+	
+	
 	int cnt = 0;
 	int num;
 	int OpenJudge = 0;
 	int CallNumber[75];
 	
-	while(cnt < 5){//bingoしたら終わりにしたい
-	Recall:
-	num = Choose();
-	for(i=0; i<cnt + 1; i++){
-		if(num == CallNumber[i]){
-			goto Recall;//上4行くらいに飛ぶ
+	int yoko[5][5];//行、横ビンゴ判定
+	int tate[5][5];//列、縦ビンゴ判定
+	int naname[2][5];
+	int yokocnt = 0;
+	int tatecnt = 0;
+	int nanamecnt = 0;
+	int Bingo_yokocnt = 0;
+	int Bingo_tatecnt = 0;
+	int Bingo_Centtatecnt = 0;
+	int Bingo_nanamecnt = 0;
+
+	for(i=0; i<5; i++){
+		for(j=0; j<5; j++){
+			yoko[i][j]=-1;
+			tate[i][j]=-1;
+			naname[i][j]=-1;
 		}
-	}
-	CallNumber[cnt] = num;
-		for(i=0; i<5; i++){//開くかどうか判定
+	}	
+	yoko[2][2] = 0;
+	tate[2][2] = 0;
+	naname[0][2] = 0;//　＼方向
+	naname[1][2] = 0;//　／方向
+	
+
+	
+	while(cnt < 75){//bingoしたらcntが9999になる
+		Recall://下4行くらいにある
+		num = Choose();
+		for(i=0; i<cnt + 1; i++){
+			if(num == CallNumber[i]){
+				goto Recall;//上4行くらいに飛ぶ
+			}
+		}
+		CallNumber[cnt] = num;
+		for(i=0; i<5; i++){//カードの数字が開くかどうか判定
 			for(j=0; j<5; j++){
 				if(num == status[j][i]){
+					//printf("%d",tate[0][4]);
 					status[j][i] = 0;
 					OpenJudge++;
+					yoko[i][j] = 0;
+					tate[j][i] = 0;
+					if(i == j){
+						naname[0][i] = 0;
+					}
+					if(i + j == 4){
+						naname[1][i] = 0;
+					}
+					//printf("%d",tate[0][4]);
 				}
 				if(j == 0 && i != 0)printf("\n");//改行してカードっぽい表示にする
 				if(status[j][i] != 0){//true、つまり番号が開いていない(0じゃない)なら
@@ -89,8 +126,52 @@ int main(void){
 				}
 			}
 		}
-		
 		//ビンゴ、リーチ判定
+		for(i=0; i<5; i++){
+			for(j=0; j<5; j++){
+				if(yoko[i][j] == 0){
+					yokocnt++;
+				}
+				if(tate[i][j] == 0){
+					tatecnt++;
+				}
+				if(i<2 && naname[i][j] == 0){
+					nanamecnt++;
+				}
+				//printf("\n%d%d%d",yokocnt, tatecnt, nanamecnt);
+				
+			}
+			
+			if(yokocnt==5){
+				printf("%d列めの横ビンゴです！",i+1);
+				Bingo_yokocnt++;
+				goto goodbingo;//多重ループ抜け
+			}
+			if(tatecnt==5){
+				printf("%d列めの縦ビンゴです！",i+1);
+				if(i==2){
+					Bingo_Centtatecnt++;
+				}else{
+					Bingo_tatecnt++;
+				}
+				goto goodbingo;
+			}
+			if(nanamecnt==5){
+				printf("%d列めのななめビンゴです！",i+1);
+				Bingo_nanamecnt++;
+				goto goodbingo;
+			}
+			yokocnt=0;
+			tatecnt=0;
+			nanamecnt=0;
+			//printf("test区切り");
+		}
+		goodbingo:
+		//printf("%d%d%d%d\n",Bingo_yokocnt, Bingo_tatecnt, Bingo_Centtatecnt, Bingo_nanamecnt);
+		if(Bingo_yokocnt==1 || Bingo_tatecnt==1 || Bingo_Centtatecnt==1 || Bingo_nanamecnt==1){
+			printf("ビンゴだよ");
+			cnt = 9999;
+		}
 		printf("%dです！",num);
 		if(OpenJudge == 1){
 			printf("該当する数字がオープンされます！");
