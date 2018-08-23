@@ -11,54 +11,31 @@ int GetRandom(int min,int max){
 
 int Choose(void){
 	int n = GetRandom(1,75000000) % 75 + 1;
-	//printf("%dã§ã™ï¼",n);
+	////printf("%d‚Å‚·I",n);
 	return n;
 }
 
-/*int hit(){
-	int i,j;
-	int status[5][5];
-	int num = Choose();
-	for(i=0; i>5; i++){
-		for(j=0; j>5; j++){
-			if(num == status[i][j]){
-				status[i][j] = 0;
-				goto RoopEscape;//ä¸‹5è¡Œãã‚‰ã„ã®å ´æ‰€ã«é£›ã¶
-			}
-		}
-	}
-	RoopEscape:
-	//system("pause");
-	return status[i][j];
-}*/
-
-/*
-int bingo(){
-	
-}
-*/
-int main(void){
-    int status[5][5] = {};
-    int i,j;//iãŒæ¨ªã€ï½ŠãŒç¸¦
+int bingo(void){
+	int status[5][5] = {};
+	int i,j;//i‚ª‰¡A‚Š‚ªc
 	int k;
-    int duplication[5] = {};
-	srand((unsigned int)time(NULL));
+	int duplication[5] = {};
 	
-    for(i=0; i<5; i++){//ãƒ“ãƒ³ã‚´ã‚«ãƒ¼ãƒ‰ä½œã‚Š
-        for(j=0; j<5; j++){
+	for(i=0; i<5; i++){//ƒrƒ“ƒSƒJ[ƒhì‚è
+		for(j=0; j<5; j++){
 			Relottery:
 			status[i][j] =  GetRandom(1,1500000) % 15 + i*15 +1;
 			
-			//è¢«ã‚Šèª¿æŸ»
+			//”í‚è’²¸
 			duplication[j] = status[i][j];
 			for(k=0; k<j; k++){
 				if(status[i][j] == duplication[k]){
-					goto Relottery;//ä¸Š5è¡Œãã‚‰ã„ã«é£›ã¶
+				goto Relottery;//ã5s‚­‚ç‚¢‚É”ò‚Ô
 				}
 			}
-        }
-    }
-	status[2][2] = 0;//ä¸­å¤®ãŒé–‹ã
+		}
+	}
+	status[2][2] = 0;//’†‰›‚ªŠJ‚­
 	
 	
 	
@@ -68,17 +45,13 @@ int main(void){
 	int OpenJudge = 0;
 	int CallNumber[75];
 	
-	int yoko[5][5];//è¡Œã€æ¨ªãƒ“ãƒ³ã‚´åˆ¤å®š
-	int tate[5][5];//åˆ—ã€ç¸¦ãƒ“ãƒ³ã‚´åˆ¤å®š
+	int yoko[5][5];//sA‰¡ƒrƒ“ƒS”»’è
+	int tate[5][5];//—ñAcƒrƒ“ƒS”»’è
 	int naname[2][5];
 	int yokocnt = 0;
 	int tatecnt = 0;
 	int nanamecnt = 0;
-	int Bingo_yokocnt = 0;
-	int Bingo_tatecnt = 0;
-	int Bingo_Centtatecnt = 0;
-	int Bingo_nanamecnt = 0;
-
+	int Bingopos = 0;
 	for(i=0; i<5; i++){
 		for(j=0; j<5; j++){
 			yoko[i][j]=-1;
@@ -88,24 +61,22 @@ int main(void){
 	}	
 	yoko[2][2] = 0;
 	tate[2][2] = 0;
-	naname[0][2] = 0;//ã€€ï¼¼æ–¹å‘
-	naname[1][2] = 0;//ã€€ï¼æ–¹å‘
+	naname[0][2] = 0;//@_•ûŒü
+	naname[1][2] = 0;//@^•ûŒü
 	
-
 	
-	while(cnt < 75){//bingoã—ãŸã‚‰cntãŒ9999ã«ãªã‚‹
-		Recall://ä¸‹4è¡Œãã‚‰ã„ã«ã‚ã‚‹
+	while(cnt < 75){//bingo‚µ‚½‚çcnt‚ª9999‚É‚È‚é
+		Recall://‰º4s‚­‚ç‚¢‚É‚ ‚é
 		num = Choose();
 		for(i=0; i<cnt + 1; i++){
 			if(num == CallNumber[i]){
-				goto Recall;//ä¸Š4è¡Œãã‚‰ã„ã«é£›ã¶
+				goto Recall;//ã4s‚­‚ç‚¢‚É”ò‚Ô
 			}
 		}
 		CallNumber[cnt] = num;
-		for(i=0; i<5; i++){//ã‚«ãƒ¼ãƒ‰ã®æ•°å­—ãŒé–‹ãã‹ã©ã†ã‹åˆ¤å®š
+		for(i=0; i<5; i++){//ƒJ[ƒh‚Ì”š‚ªŠJ‚­‚©‚Ç‚¤‚©”»’èAŠJ‚¢‚½‚ç0‚É‚·‚é
 			for(j=0; j<5; j++){
 				if(num == status[j][i]){
-					//printf("%d",tate[0][4]);
 					status[j][i] = 0;
 					OpenJudge++;
 					yoko[i][j] = 0;
@@ -116,17 +87,16 @@ int main(void){
 					if(i + j == 4){
 						naname[1][i] = 0;
 					}
-					//printf("%d",tate[0][4]);
 				}
-				if(j == 0 && i != 0)printf("\n");//æ”¹è¡Œã—ã¦ã‚«ãƒ¼ãƒ‰ã£ã½ã„è¡¨ç¤ºã«ã™ã‚‹
-				if(status[j][i] != 0){//trueã€ã¤ã¾ã‚Šç•ªå·ãŒé–‹ã„ã¦ã„ãªã„(0ã˜ã‚ƒãªã„)ãªã‚‰
-					printf("%d	",status[j][i]);
-				}else{
-					printf("OPEN	");
+				if(j == 0 && i != 0)//printf("\n");//‰üs‚µ‚ÄƒJ[ƒh‚Á‚Û‚¢•\¦‚É‚·‚é
+				if(status[j][i] != 0){//”Ô†‚ªŠJ‚¢‚Ä‚¢‚È‚¢‚È‚ç
+					//printf("%d	",status[j][i]);
+				}else{//ŠJ‚¢‚Ä‚¢‚é‚È‚ç
+					//printf("OPEN	");
 				}
 			}
 		}
-		//ãƒ“ãƒ³ã‚´ã€ãƒªãƒ¼ãƒåˆ¤å®š
+		//ƒrƒ“ƒSAƒŠ[ƒ`”»’è
 		for(i=0; i<5; i++){
 			for(j=0; j<5; j++){
 				if(yoko[i][j] == 0){
@@ -143,46 +113,63 @@ int main(void){
 			}
 			
 			if(yokocnt==5){
-				printf("%dåˆ—ã‚ã®æ¨ªãƒ“ãƒ³ã‚´ã§ã™ï¼",i+1);
-				Bingo_yokocnt++;
-				goto goodbingo;//å¤šé‡ãƒ«ãƒ¼ãƒ—æŠœã‘
+				//printf("%d—ñ‚ß‚Ì‰¡ƒrƒ“ƒS‚Å‚·I",i+1);
+				Bingopos = i+1;//1~5
+				goto goodbingo;//‘½dƒ‹[ƒv”²‚¯
 			}
 			if(tatecnt==5){
-				printf("%dåˆ—ã‚ã®ç¸¦ãƒ“ãƒ³ã‚´ã§ã™ï¼",i+1);
+				//printf("%d—ñ‚ß‚Ìcƒrƒ“ƒS‚Å‚·I",i+1);
 				if(i==2){
-					Bingo_Centtatecnt++;
+					Bingopos = 8;
 				}else{
-					Bingo_tatecnt++;
+					Bingopos = i+6;//6,7,9,10
 				}
 				goto goodbingo;
 			}
 			if(nanamecnt==5){
-				printf("%dåˆ—ã‚ã®ãªãªã‚ãƒ“ãƒ³ã‚´ã§ã™ï¼",i+1);
-				Bingo_nanamecnt++;
+				//printf("%d—ñ‚ß‚Ì‚È‚È‚ßƒrƒ“ƒS‚Å‚·I",i+1);
+				Bingopos = i+11;//11,12
 				goto goodbingo;
 			}
 			yokocnt=0;
 			tatecnt=0;
 			nanamecnt=0;
-			//printf("teståŒºåˆ‡ã‚Š");
+			//printf("test‹æØ‚è");
 		}
 		goodbingo:
-		//printf("%d%d%d%d\n",Bingo_yokocnt, Bingo_tatecnt, Bingo_Centtatecnt, Bingo_nanamecnt);
-		if(Bingo_yokocnt==1 || Bingo_tatecnt==1 || Bingo_Centtatecnt==1 || Bingo_nanamecnt==1){
-			printf("ãƒ“ãƒ³ã‚´ã ã‚ˆ");
+		if(Bingopos > 0){
+			//printf("ƒrƒ“ƒS‚¾‚æ");
 			cnt = 9999;
 		}
-		printf("%dã§ã™ï¼",num);
+		//printf("%d‚Å‚·I",num);
 		if(OpenJudge == 1){
-			printf("è©²å½“ã™ã‚‹æ•°å­—ãŒã‚ªãƒ¼ãƒ—ãƒ³ã•ã‚Œã¾ã™ï¼");
+			//printf("ŠY“–‚·‚é”š‚ªƒI[ƒvƒ“‚³‚ê‚Ü‚·I");
 			OpenJudge--;
 		}
-		printf("\n\n");
-		cnt++;//å˜ä½“ã ã¨ãƒ†ã‚¹ãƒˆç”¨
+		//printf("\n\n");
+		cnt++;//’P‘Ì‚¾‚ÆƒeƒXƒg—p
 	}
-	return 0;
+	return Bingopos;
+	
 }
 
-
-
+int main(void){
+	srand((unsigned int)time(NULL));
+	int i,j;
+	int bingocnt[13];
+	int n;
+	printf("ƒrƒ“ƒSŒ‹‰Ê‚ğ‰½‰ño‚·H");
+	scanf("%d",&n);
+	for(i=1; i<13; i++){//‰Šú‰»
+		bingocnt[i] = 0;
+	}
+	for(i=0; i<n; i++){//i<n‚Ìn‰ñƒrƒ“ƒSŒ‹‰Ê‚à‚Á‚Ä‚­‚é‚¼
+		int BingoType = bingo();
+		printf("%d\n",BingoType);
+		bingocnt[BingoType]++;
+	}
+	for(i=1; i<13; i++){
+		printf("%d ",bingocnt[i]);
+	}//‚±‚Ì•Óƒ_ƒT‚·‚¬.
+}
 
